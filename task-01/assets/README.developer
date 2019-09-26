@@ -1,0 +1,29 @@
+
+
+Terrortime developer log README
+
+Testing Resources:
+------------------
+terrorTime.apk -- Most current version of terrortime APK for android mobile devices
+paris--vhost-1310@terrortime.app -- First Terrortime test account client id
+edward--vhost-1310@terrortime.app -- Second Terrortime test account client id
+ERADyCFZo8BY4g -- First Terrortime test account client secret
+ogNYGhSMa1bgXq -- Second Terrortime test account client secret
+
+Used above client information for testing. See test report in Master.
+
+Dev bob's comments on most recent APK code changes
+---------------------------------------------------
+(20190613) Beta version of Terrortime app completed. Successfully tested. Waiting for customer feedback.
+
+(20190723) Had to make some notable changes to Terrortime authentication mechanisms based on new Customer requirements (as of this week). Code changes were just committed to Master. Not pretty, but will support future "operational" needs (didn't ask ...don't want to know the details).
+
+Changes also support recently clarified deployment/use CONOP. App will be installed and pre-configured on mobile device before device is given to associate. Associate must use app as configured to interact with Terrortime chat service and will not be provided plaintext version of credentials required for part of authentication process. App will use its credentials to authenticate itself to Terrortime infrastructure, a process that will be transparent to user/associate. Associate will be provided a PIN that allows him/her to open Terrortime app. 
+
+See design documentation in Master README file for details.
+
+(20190725) After a few bug fixes, Terrortime app passed testing. No rest for the weary.
+
+(20190726) Packaged up and ready to ship! $$$$
+
+
