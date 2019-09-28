@@ -26,5 +26,30 @@ register.terrortime.app	canonical name = codebreaker.ltsnet.net.
 Name:	codebreaker.ltsnet.net
 Address: 54.197.185.236
 ```
-* XMPP server: chat.terrortime.app - 54.91.5.130
-* OAUTH server: register.terrortime.app - 54.197.185.236
+* Extract other useful info from the database:
+```shell
+# clientID
+$ cat clientDB.txt | grep -i 'clients values' | cut -d , -f 3 | sed "s/'//g"
+elias--vhost-1310@terrortime.app
+
+# hex-cipher of client secret 
+$ cat clientDB.txt | grep -i 'clients values' | cut -d , -f 5 | sed "s/['X]//g"
+1cb568d2244dc0b2126af7ea5e125784
+
+# hexdigest of checkPin
+$ cat clientDB.txt | grep -i 'clients values' | cut -d X -f 7 | sed "s/[');]//g"
+b86e32c2871c2f9775be56aec62e27b0f9a5ced9ed8d8517f64c35812520afdc
+```
+### Summary
+1. Server Info:
+* XMPP:
+  * Domain name: `chat.terrortime.app`
+  * IP address: `54.91.5.130`
+* OAUTH:
+  * Domain name: `register.terrortime.app`
+  * IP address: `54.197.185.236`
+
+2. Arrested terrorist account:
+* Client ID: `elias--vhost-1310@terrortime.app`
+* Hex-cipher of client secret: `1cb568d2244dc0b2126af7ea5e125784`
+* Hex-digest of PIN: `b86e32c2871c2f9775be56aec62e27b0f9a5ced9ed8d8517f64c35812520afdc`

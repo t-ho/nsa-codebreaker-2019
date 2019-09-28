@@ -42,10 +42,14 @@ Signer #1 certificate MD5 digest: 28bc74a82e950b47d4f570b2d8bbe67a
 ```
 
 ### Summary
-1. SHA256 of Signing Certificate:
+1. App permissions:
+* `INTERNET`
+* `ACCESS_NETWORK_STATE`
+
+2. SHA256 of Signing Certificate:
 
 `d9c83d0e3c47cde0f432876f1c928e13bf303d0c00ceb1286bcc225555ad6c97`
 
-2. Signer Common Name:
+3. Signer Common Name:
 
 `dev_terrorTime_451164`
