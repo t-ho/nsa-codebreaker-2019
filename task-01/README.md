@@ -17,3 +17,16 @@ edward--vhost-1310@terrortime.app -- Second Terrortime test account client id
 ERADyCFZo8BY4g -- First Terrortime test account client secret
 ogNYGhSMa1bgXq -- Second Terrortime test account client secret
 ```
+
+### Summary
+1. SHA256 of terrortime.apk
+
+`72bca4770a10895aac253b4af65a9ee23feef9b6e9fa3f46496260bf00c416fe`
+
+2. Account info
+* Account 1:
+  * Client ID: `paris--vhost-1310@terrortime.app`
+  * Client Secret: `ERADyCFZo8BY4g`
+* Account 2:
+  * Client ID: `edward--vhost-1310@terrortime.app`
+  * Client Secrect: `ogNYGhSMa1bgXq`
