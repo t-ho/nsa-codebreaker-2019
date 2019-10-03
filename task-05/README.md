@@ -1,4 +1,4 @@
-## Task 05 - 
+## Task 05 - Masquerade
 
 * Use [uncompyle6](https://github.com/rocky/python-uncompyle6) to decompile Python bytecode [auth_verify.pyc](./auth_verify.pyc) back to Python source code.
 

@@ -25,7 +25,7 @@ $ python3 bruteforce_db.py -d clientDB.db
   * [pem_my_key.priv](../assets/TerrorTimeSol/pem_my_key.priv)
   * [pem_my_key.pub](../assets/TerrorTimeSol/pem_my_key.pub)
 
-* After obtaining the keys, run the [TerrorTimeSol](../assets/TorrorTimeSol) app, and choose option 3 to masquerade as `julianna`.
+* After obtaining the keys, run the [TerrorTimeSol](../assets/TerrorTimeSol) app, and choose option 3 to masquerade as `julianna`.
 
 * Then update the database in the emulator so that we can log in as `julianna` to send spoofed messages.
 
