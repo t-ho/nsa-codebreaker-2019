@@ -1,8 +1,14 @@
 package terrortimesol;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +29,7 @@ import org.jivesoftware.smackx.mam.MamManager;
 import org.jivesoftware.smackx.mam.MamManager.MamQuery;
 import org.jivesoftware.smackx.mam.MamManager.MamQueryArgs;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.json.JSONObject;
 import org.jxmpp.jid.Jid;
 
@@ -44,7 +51,8 @@ public class XmppClient {
 	 * 
 	 * @param username The username
 	 * 
-	 * Note: The password is an access token which is requested automatically
+	 *                 Note: The password is an access token which is requested
+	 *                 automatically
 	 */
 	public XmppClient(String username) {
 		AccessToken accessToken = new AccessToken();
@@ -61,7 +69,7 @@ public class XmppClient {
 	public XmppClient(String username, String password) {
 		this.init(username, password);
 	}
-	
+
 	private void init(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -139,13 +147,117 @@ public class XmppClient {
 		}
 	}
 
+	public void backupPublicKeys() {
+		String fieldName = "DESC";
+		try {
+			VCard vCard = this.vCardManager.loadVCard();
+			if (vCard != null) {
+				String desc = vCard.getField(fieldName);
+				if (desc != null) {
+					Long systemEpoch = Long.valueOf(System.currentTimeMillis());
+					String fileName = username + "pub-keys-backup_" + systemEpoch + ".txt";
+					this.writeFile(desc.getBytes(), fileName);
+					System.out.println("[+] Public keys of " + this.username + "has been backed up to " + fileName);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addPublicKey(String pubKeyFile) {
+		String fieldName = "DESC";
+		this.backupPublicKeys();
+		try {
+			VCard vCard = this.vCardManager.loadVCard();
+			if (vCard != null) {
+				String desc = vCard.getField(fieldName);
+				if (desc != null) {
+					byte[] myKey = this.readFile(pubKeyFile);
+					for (String key : desc.split(":")) {
+						if (Arrays.equals(key.getBytes(), myKey)) {
+							System.out.println("[+] Your key was added to pubkey set of " + username);
+							return;
+						}
+					}
+					StringBuilder sb = new StringBuilder(new String(myKey));
+					sb.append(":");
+					sb.append(desc);
+					vCard.setField(fieldName, sb.toString());
+					this.vCardManager.saveVCard(vCard);
+					System.out.println("[+] Your key has been added to pubkey set of " + username);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Replace the current public keys in vCard with the public key specified int
+	 * the file
+	 * 
+	 * @param pubKey    the public key
+	 * @param isKeyFile true if the pubKey is a key file name, otherwise pubKey is a
+	 *                  pubkey string
+	 * @return the old public keys if success. Otherwise, return empty string
+	 */
+	public String replacePublicKeysWith(String pubKey, boolean isKeyFile) {
+		this.backupPublicKeys();
+		String fieldName = "DESC";
+		try {
+			VCard vCard = this.vCardManager.loadVCard();
+			if (vCard != null) {
+				String desc = vCard.getField(fieldName);
+				if (desc != null) {
+					String newKey = pubKey;
+					if (isKeyFile) {
+						newKey = new String(this.readFile(pubKey));
+					}
+					vCard.setField(fieldName, newKey);
+					this.vCardManager.saveVCard(vCard);
+					return desc;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public byte[] readFile(String fileName) {
+		long fileSize = new File(fileName).length();
+		byte[] allBytes = new byte[(int) fileSize];
+		try {
+			FileInputStream inputStream = new FileInputStream(fileName);
+			inputStream.read(allBytes);
+			inputStream.close();
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return allBytes;
+	}
+
+	public boolean writeFile(byte[] data, String fileName) {
+		try {
+			FileOutputStream outputStream = new FileOutputStream(fileName);
+			outputStream.write(data);
+			outputStream.close();
+			return true;
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
 	public void disconnect() {
 		if (mConnection != null && mConnection.isConnected()) {
 			this.mConnection.disconnect();
 		}
 		System.out.println("[*] Connection closed");
 	}
-
 
 	/**
 	 * @return the roster
@@ -181,7 +293,7 @@ public class XmppClient {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	/**
 	 * @return the Jid of the login user
 	 */

