@@ -1,0 +1,26 @@
+{
+    "256": {
+        "params": {
+            "privkey": "",
+            "pubkey": "-----BEGIN PUBLIC KEY-----\nMDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhAL3q7biU1tvH+280YFAetHj2AdynPE0F\n3m29lGXiz7ABAgMBAAE=\n-----END PUBLIC KEY-----\n",
+            "r1": "E+3pDVN853hZnbloDQq2cuZNSf6+egdQLxm3lxg9Kso=",
+            "r2": "aUfuNx47CquEh78rf2a1rzxrgquj3lIRDoMUx04gPH0="
+        }
+    },
+    "512": {
+        "params": {
+            "privkey": "",
+            "pubkey": "-----BEGIN PUBLIC KEY-----\nMFswDQYJKoZIhvcNAQEBBQADSgAwRwJAId7KyhItIk+zWp2L7rEKURr94WGgv1pa\nFyjGzFsblUpwEZid6vO3be4qvyOD34RpuZabZBjUT7EvsVhMejFj4QIDAQAB\n-----END PUBLIC KEY-----\n",
+            "r1": "JNFP6sk10OqdMsJitbYPX6X+yGMYCfRhvfBAq/e4Q+j1w/xRW7iCGPfqh/zzN3Z5ChipkdB4qu+lh28ya6NWKQ==",
+            "r2": "JH5XXqQVFd2lWwZgLrNrGpuz7AZXckaC3ve+Iyzmvz2/cPm7ltMHy0UWvb+L4pO8bF3qIfV+c/0LZPC3/1qFaw=="
+        }
+    },
+    "1024": {
+        "params": {
+            "privkey": "",
+            "pubkey": "-----BEGIN PUBLIC KEY-----\nMIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgDg7pAaqadA1GiOkS3r9Eh17Lw+6\n0ZgGd9zM0IGGUkLLbEoJOvwNSZ7MxU0tl/JX3U39oB/MCA/cimBept6GEIvB4OPr\nviWzyWoQ3iDgJUDbrAZAz4pTPX/NmQskNga0y9sem1Rbxq80i3AZ9wcjJ0SYSoEV\n1PCa4HOyj3DDEkj3AgMBAAE=\n-----END PUBLIC KEY-----\n",
+            "r1": "HgXs0Dzbwl1oBPPsZw4RLAM1RyqxiNu4glAbkIejyW9aB+pI911saiAT2DcXXukCqAWHdpHG4BAWL8mIQve+03ZOiXkadaYYN6W1TETWmEsziXlWu2lPeuuMvq5lRBADMW/JM8pwO8ykqIAnyb4DjaMYzIjA1IMRYOHP7w7jhRY=",
+            "r2": "P72R/c2IGTIjZFw38tFsUaJ7KIJDDIN7UeRBVzrY6066PTw3ojx8opPie6tInY3VuMw71QU3btegfpcHEyao2vOp6ENAaInqNna/wHiNmDDj3tO5wNvNe58Lt+p+L3IjdxAK4V0Vaws7f8tB27iK/AEeKdDAn2xtjgUerQXpYqI="
+        }
+    }
+}

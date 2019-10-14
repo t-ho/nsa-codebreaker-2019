@@ -26,3 +26,4 @@ bin/
 /target/
 *DS_Store
 model.jpg
+__pycache__/

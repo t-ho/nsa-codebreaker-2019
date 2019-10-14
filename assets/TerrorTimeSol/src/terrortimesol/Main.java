@@ -1,8 +1,13 @@
 package terrortimesol;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.jivesoftware.smack.roster.Roster;
@@ -100,13 +105,22 @@ public class Main {
 		System.out.print("[*] Please enter your public key filename: ");
 		String pubKeyFile = input.nextLine();
 		LinkedList<String> usernames = Main.getAllAccounts();
-		for (String username: usernames) {
+		for (String username : usernames) {
 			XmppClient xmppClient = new XmppClient(username);
 			xmppClient.addPublicKey(pubKeyFile);
 			xmppClient.disconnect();
 		}
 		System.out.println("[+] You public key has been added to all Terrortime account.");
 	}
+
+	public static void exportAllPublicKeys() {
+		Scanner input = new Scanner(System.in);
+		System.out.print("[*] Please enter the username: ");
+		String username = input.nextLine();
+		XmppClient xmppClient = new XmppClient(username);
+		xmppClient.exportAllPublicKeys();
+	}
+
 
 	public static int menu() {
 		int selection = 0;
@@ -117,23 +131,29 @@ public class Main {
 		System.out.println("    2 - Print the last encrypted message");
 		System.out.println("    3 - Masquerade");
 		System.out.println("    4 - Add your public key to all account for future decryption");
+		System.out.println("    5 - Export all public keys to file");
 		System.out.println("    0 - Exit");
 		System.out.print("[*] Please enter your choices: ");
 
 		do {
 			try {
 				selection = input.nextInt();
+				if (selection < 0 || selection > 5) {
+					System.out.println("[-] Invalid choice.");
+					System.out.print("\n[*] Please choose again: ");
+					selection = -1;
+				}
 			} catch (InputMismatchException e) {
 				System.out.println("[-] Invalid choice.");
 				System.out.print("\n[*] Please choose again: ");
 				input.nextLine();
 				selection = -1;
 			}
-		} while (selection < 0 || selection > 4);
+		} while (selection < 0);
 		return selection;
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, Exception {
 		int selection = 0;
 		do {
 			selection = Main.menu();
@@ -150,8 +170,12 @@ public class Main {
 			case 4:
 				Main.addPublicKeyToAllAccounts();
 				break;
+			case 5:
+				Main.exportAllPublicKeys();
+				break;
 			case 0:
-				selection = -1;
+				System.out.println("[*] Exit.");
+				break;
 			}
 		} while (selection != 0);
 	}

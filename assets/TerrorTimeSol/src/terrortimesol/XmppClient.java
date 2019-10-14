@@ -147,22 +147,38 @@ public class XmppClient {
 		}
 	}
 
-	public void backupPublicKeys() {
+	public String getPublicKeys() {
 		String fieldName = "DESC";
+		String desc = "";
 		try {
 			VCard vCard = this.vCardManager.loadVCard();
 			if (vCard != null) {
-				String desc = vCard.getField(fieldName);
-				if (desc != null) {
-					Long systemEpoch = Long.valueOf(System.currentTimeMillis());
-					String fileName = username + "pub-keys-backup_" + systemEpoch + ".txt";
-					this.writeFile(desc.getBytes(), fileName);
-					System.out.println("[+] Public keys of " + this.username + "has been backed up to " + fileName);
-				}
+				desc = vCard.getField(fieldName);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return desc;
+	}
+
+	public void backupPublicKeys() {
+		String publicKeys = this.getPublicKeys();
+		if (publicKeys != "") {
+			Long systemEpoch = Long.valueOf(System.currentTimeMillis());
+			String fileName = username + "_pub-keys-backup_" + systemEpoch + ".txt";
+			this.writeFile(publicKeys.getBytes(), fileName);
+			System.out.println("[+] Public keys of " + this.username + " have been backed up to " + fileName);
+		}
+
+	}
+	
+	public void exportAllPublicKeys() {
+		String publicKeys = this.getPublicKeys();
+		String fileName = username + "_pub-keys.txt";
+		this.writeFile(publicKeys.getBytes(), fileName);
+		String message = "[+] All public keys of " + this.username + " have been exported to " + fileName + ".\n";
+		message += "    They are seperated by colon (':')";
+		System.out.println(message);
 	}
 
 	public void addPublicKey(String pubKeyFile) {
