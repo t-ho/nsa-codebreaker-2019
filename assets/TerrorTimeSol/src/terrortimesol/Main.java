@@ -1,13 +1,8 @@
 package terrortimesol;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.Scanner;
 
 import org.jivesoftware.smack.roster.Roster;
@@ -16,7 +11,7 @@ import org.jivesoftware.smack.roster.RosterEntry;
 public class Main {
 
 	public static LinkedList<String> getAllAccounts() throws InterruptedException {
-		System.out.println("[*] Find all the accounts...");
+		System.out.println("\n[*] Find all the accounts...");
 		String username = "elias--vhost-1310";
 		LinkedList<RosterEntry> allAccounts = new LinkedList<RosterEntry>();
 		XmppClient xmppClient = null;
@@ -29,6 +24,7 @@ public class Main {
 		do {
 			username = usernameList.get(index);
 			xmppClient = new XmppClient(username);
+			System.out.println("[*] Retrieving contact list...");
 			roster = xmppClient.getRoster();
 
 			Collection<RosterEntry> entries = null;
@@ -79,20 +75,20 @@ public class Main {
 		System.out.print("[*] Please enter your public key filename: ");
 		String pubKeyFile = input.nextLine();
 		XmppClient xmppClient = new XmppClient(username);
-		String originalPubKeys = xmppClient.replacePublicKeysWith(pubKeyFile, true);
+		String originalPubKeys = xmppClient.replacePublicKeysWith(pubKeyFile, true, true);
 		if (originalPubKeys != "") {
 			xmppClient.disconnect();
-			System.out.println("[+] You have been masqueraded as " + username);
-			System.out.println("[*] " + username + " CANNOT see your spoofed messages");
+			System.out.println("\n[+] You have been masqueraded as " + username);
+			System.out.println("[+] " + username + " CANNOT see your spoofed messages\n");
 			System.out
 					.println("[*] Please log in as " + username + " on the android emulator and send spoofed messages");
 			String choice = "y";
 			do {
-				System.out.print("[*] Stop masquerading [Y/n]?");
+				System.out.print("[*] Stop masquerading [Y/n]? ");
 				choice = input.nextLine();
 			} while (choice == "n");
 			xmppClient = new XmppClient(username);
-			if (xmppClient.replacePublicKeysWith(originalPubKeys, false) != "") {
+			if (xmppClient.replacePublicKeysWith(originalPubKeys, false, false) != "") {
 				System.out.println("[+] Masquerading is stop.");
 			}
 		} else {
@@ -114,6 +110,7 @@ public class Main {
 	}
 
 	public static void exportAllPublicKeys() {
+		System.out.println("\n[*] Export all public keys");
 		Scanner input = new Scanner(System.in);
 		System.out.print("[*] Please enter the username: ");
 		String username = input.nextLine();
@@ -126,7 +123,9 @@ public class Main {
 		int selection = 0;
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("\n\n[*] Menu");
+		System.out.println("\n        --:[ TERRORTIME XMPP TOOL ]:--");
+		System.out.println("                    0x8861");
+		System.out.println("[*] Menu");
 		System.out.println("    1 - Print all accounts");
 		System.out.println("    2 - Print the last encrypted message");
 		System.out.println("    3 - Masquerade");

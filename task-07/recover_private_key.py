@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from Crypto.PublicKey import RSA
 import argparse
 import base64
@@ -222,9 +224,10 @@ def export_keys(pem_pubkey, keyparams, output_filename):
 
 
 def main():
-    print('--:[ TERRORTIME PRIVATE KEY RECOVER ]:--')
-
     options = get_arguments()
+
+    print('\n        --:[ TERRORTIME PRIVATE KEY RECOVER ]:--')
+    print('                          0x8861\n')
 
     keyparams = Keyparams(default_keyparams)
     if options.keyparams:

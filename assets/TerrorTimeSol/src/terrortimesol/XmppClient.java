@@ -55,6 +55,7 @@ public class XmppClient {
 	 *                 automatically
 	 */
 	public XmppClient(String username) {
+		System.out.println("[*] Connecting to XMPP server...");
 		AccessToken accessToken = new AccessToken();
 		String password = accessToken.getToken().getString("access_token");
 		this.init(username, password);
@@ -80,7 +81,7 @@ public class XmppClient {
 	}
 
 	private void login() {
-		System.out.println("\n[*] Login as " + username);
+		System.out.println("\n[*] Trying to login as " + username + "...");
 		ReconnectionManager mReconnectionManager = null;
 		SmackConfiguration.DEBUG = isDebug;
 		try {
@@ -125,6 +126,7 @@ public class XmppClient {
 	}
 
 	public List<Message> getMessageArchive(int noOfMessages) {
+		System.out.println("[*] Retrieving the messages...");
 		try {
 			if (this.mamManager.isSupported()) {
 				MamQueryArgs mamQueryArgs = MamQueryArgs.builder().setResultPageSizeTo(noOfMessages).build();
@@ -143,7 +145,7 @@ public class XmppClient {
 			JSONObject jsonLastMessage = new JSONObject(messageList.getLast().getBody());
 			System.out.println("[+] The last encrypted message:\n");
 			System.out.println(messageList.getLast());
-			System.out.println(jsonLastMessage.toString(4) + "\n");
+			System.out.println(jsonLastMessage.toString(4));
 		}
 	}
 
@@ -162,6 +164,7 @@ public class XmppClient {
 	}
 
 	public void backupPublicKeys() {
+		System.out.println("[*] Backing up public keys...");
 		String publicKeys = this.getPublicKeys();
 		if (publicKeys != "") {
 			Long systemEpoch = Long.valueOf(System.currentTimeMillis());
@@ -173,17 +176,19 @@ public class XmppClient {
 	}
 	
 	public void exportAllPublicKeys() {
+		System.out.println("[*] Exporting public keys...");
 		String publicKeys = this.getPublicKeys();
 		String fileName = username + "_pub-keys.txt";
 		this.writeFile(publicKeys.getBytes(), fileName);
 		String message = "[+] All public keys of " + this.username + " have been exported to " + fileName + ".\n";
-		message += "    They are seperated by colon (':')";
+		message += "    They are seperated by colon (':').";
 		System.out.println(message);
 	}
 
 	public void addPublicKey(String pubKeyFile) {
 		String fieldName = "DESC";
 		this.backupPublicKeys();
+		System.out.println("[*] Adding your public key...");
 		try {
 			VCard vCard = this.vCardManager.loadVCard();
 			if (vCard != null) {
@@ -216,10 +221,14 @@ public class XmppClient {
 	 * @param pubKey    the public key
 	 * @param isKeyFile true if the pubKey is a key file name, otherwise pubKey is a
 	 *                  pubkey string
+	 * @param needBackup Need to backup the public keys before replacing
 	 * @return the old public keys if success. Otherwise, return empty string
 	 */
-	public String replacePublicKeysWith(String pubKey, boolean isKeyFile) {
-		this.backupPublicKeys();
+	public String replacePublicKeysWith(String pubKey, boolean isKeyFile, boolean needBackup) {
+		if (needBackup) {
+			this.backupPublicKeys();
+		}
+		System.out.println("[*] Replacing public keys...");
 		String fieldName = "DESC";
 		try {
 			VCard vCard = this.vCardManager.loadVCard();
@@ -269,6 +278,7 @@ public class XmppClient {
 	}
 
 	public void disconnect() {
+		System.out.println("[*] Disconnecting...");
 		if (mConnection != null && mConnection.isConnected()) {
 			this.mConnection.disconnect();
 		}
