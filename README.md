@@ -1,5 +1,11 @@
 # NSA Codebreaker Challenge 2019 (Sep-20-2019 to Jan-10-2020)
 
+## UPDATE 2020-06-19: Received the prize from NSA 
+
+![medallion](./assets/medallion.png)
+
+See the [shellcode](./medallion-shellcode/README.md)
+
 **The challenge can be found [here](https://codebreaker.ltsnet.net/challenge)**
 
 ## Background
